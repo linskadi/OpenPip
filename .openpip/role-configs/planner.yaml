@@ -1,0 +1,23 @@
+name: planner
+model: deepseek/deepseek-chat
+temperature: 0.5
+topP: 0.8
+prompt: planner.md
+knowledge:
+  - terminology.md
+  - writing/academic-style.md
+  - methodology/methodology-argumentation.md
+  - competition/math-modeling-structure.md
+modes:
+  research:
+    description: 科研论文大纲
+    chapters: [引言, 相关工作, 方法, 实验, 结论]
+  competition:
+    description: 数学建模竞赛大纲
+    chapters: [问题重述, 问题分析, 模型假设, 符号说明, 模型建立, 模型求解, 结果分析]
+expected_output:
+  type: markdown
+  format_rules:
+    - 每章含目的句与论证链
+    - 标注每章引用的关键文献/数据
+    - 输出结构化大纲，可被 writer 直接消费

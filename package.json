@@ -1,0 +1,59 @@
+{
+  "name": "openpip",
+  "version": "0.1.0",
+  "description": "OpenPip — 私有化论文写作 Workflow Engine，10个专业 Role 协同完成学术论文全流程",
+  "main": "src/index.js",
+  "bin": {
+    "openpip": "./src/cli/openpip.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./engine": "./src/engine/index.js"
+  },
+  "files": [
+    "src/",
+    ".openpip/",
+    "config/",
+    "docs/",
+    "CLAUDE.md",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node src/cli/openpip.js",
+    "chat": "node src/cli/openpip.js chat",
+    "test": "node src/tests/test-complete.js",
+    "test:vitest": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "keywords": [
+    "ai",
+    "paper",
+    "writing",
+    "agent",
+    "academic",
+    "llm",
+    "latex"
+  ],
+  "author": "OpenPip Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openpip/openpip"
+  },
+  "homepage": "https://github.com/openpip/openpip#readme",
+  "bugs": {
+    "url": "https://github.com/openpip/openpip/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "vitest": "^4.1.9"
+  }
+}

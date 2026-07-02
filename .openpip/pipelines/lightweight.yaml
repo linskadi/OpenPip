@@ -1,0 +1,60 @@
+name: lightweight
+description: 轻量级论文写作（调研→大纲→初稿→审稿→导出）
+category: research
+domain: general
+
+stageTasks:
+  research: "分析选题方向：${topic}。生成研究简报。"
+  skeleton: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+  draft: "基于 outline 逐章撰写正文。"
+  summary: "基于全文生成结构化摘要。"
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  format: "格式化论文，应用 GB/T 7714 参考文献规范。"
+  figure: "基于正文内容生成学术图表代码并渲染。"
+  export: "将论文转为 LaTeX 并编译 PDF。"
+
+stages:
+  - id: research
+    agent: researcher
+    task: "分析选题方向：${topic}。生成研究简报。"
+    output: research/research-brief.md
+    confirm: true
+
+  - id: skeleton
+    agent: planner
+    task_prefix: "mode: research"
+    task: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+    input:
+      brief: research/research-brief.md
+    output: drafts/outline-v1.md
+    confirm: true
+
+  - id: draft
+    agent: writer
+    task_prefix: "subtask: draft"
+    task: "基于 outline 逐章撰写正文。"
+    sequential: true
+    chapters: [1, 2, 3, 4, 5]
+    input:
+      outline: drafts/outline-v1.md
+      memory: drafts/consistency-memory.md
+    output: drafts/draft-v1.md
+    qualityCheck: true
+    minWords: 5000
+
+  - id: review
+    agent: reviewer
+    task_prefix: "mode: research"
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: export
+    agent: formatter
+    task_prefix: "subtask: format"
+    task: "格式化论文，应用 GB/T 7714 参考文献规范。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/paper.md

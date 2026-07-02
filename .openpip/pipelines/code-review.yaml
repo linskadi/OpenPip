@@ -1,0 +1,55 @@
+name: code-review
+description: 代码审查管线（静态分析→安全检查→性能审查→代码质量→报告生成）
+category: custom
+domain: code-review
+
+stageTasks:
+  scan: "对项目代码进行静态分析扫描。"
+  security: "审查代码安全性，检测潜在漏洞。"
+  quality: "评估代码质量，包括可维护性、可读性和性能。"
+  suggestions: "基于扫描、安全和质量报告，生成改进建议。"
+  report: "汇总所有审查结果，生成完整的代码审查报告。"
+
+stages:
+  - id: scan
+    agent: researcher
+    task: "对项目代码进行静态分析扫描。"
+    task_prefix: "subtask: code-scan"
+    output: review/code-scan.md
+
+  - id: security
+    agent: code-reviewer
+    task: "审查代码安全性，检测潜在漏洞。"
+    task_prefix: "subtask: security-review"
+    input:
+      scan: review/code-scan.md
+    output: review/security-report.md
+
+  - id: quality
+    agent: code-reviewer
+    task: "评估代码质量，包括可维护性、可读性和性能。"
+    task_prefix: "subtask: code-quality"
+    input:
+      scan: review/code-scan.md
+    output: review/quality-report.md
+
+  - id: suggestions
+    agent: writer
+    task: "基于扫描、安全和质量报告，生成改进建议。"
+    task_prefix: "subtask: review-suggestions"
+    input:
+      scan: review/code-scan.md
+      security: review/security-report.md
+      quality: review/quality-report.md
+    output: review/suggestions.md
+
+  - id: report
+    agent: formatter
+    task: "汇总所有审查结果，生成完整的代码审查报告。"
+    task_prefix: "subtask: review-report"
+    input:
+      scan: review/code-scan.md
+      security: review/security-report.md
+      quality: review/quality-report.md
+      suggestions: review/suggestions.md
+    output: output/review-report.md

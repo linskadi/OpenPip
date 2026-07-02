@@ -1,0 +1,16 @@
+name: contribution-architect
+model: deepseek/deepseek-chat
+temperature: 0.4
+topP: 0.8
+prompt: contribution-architect.md
+knowledge:
+  - writing/academic-style.md
+  - methodology/methodology-argumentation.md
+  - terminology.md
+expected_output:
+  type: markdown
+  format_rules:
+    - 明确陈述论文的核心贡献（2-4 条）
+    - 每条贡献含：问题背景、提出方法、与现有工作的差异、预期效果
+    - 区分「方法论贡献」与「实验/应用贡献」
+    - 输出结构化贡献声明，可被后续 research/literature-synthesis 阶段消费

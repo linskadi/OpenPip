@@ -1,0 +1,22 @@
+name: researcher
+quality_standards:
+  min_references: 15
+  must_include: [研究脉络, 核心学派, 争议点, 研究空白, 建议选题]
+model: deepseek/deepseek-chat
+temperature: 0.5
+topP: 0.8
+prompt: researcher.md
+knowledge:
+  - terminology.md
+  - writing/zero-hallucination-rules.md
+  - writing/agent-collaboration-rules.md
+expected_output:
+  type: markdown
+  min_words: 1500
+  format_rules:
+    - 包含文献矩阵表格
+    - 每篇文献有年份和核心发现
+    - 标注研究空白
+tools:
+  - arxiv_search
+  - read_project_files

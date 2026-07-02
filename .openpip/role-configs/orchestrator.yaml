@@ -1,0 +1,8 @@
+name: orchestrator
+model: deepseek/deepseek-chat
+temperature: 0.1
+topP: 0.5
+prompt: orchestrator.md
+knowledge:
+  - writing/agent-collaboration-rules.md
+scheduling: workflow-first

@@ -1,0 +1,14 @@
+name: coder
+model: deepseek/deepseek-chat
+temperature: 0.3
+topP: 0.8
+prompt: coder.md
+knowledge:
+  - competition/model-evaluation.md
+  - competition/sensitivity-analysis.md
+expected_output:
+  type: notebook
+  format_rules:
+    - 代码保存为 notebook.ipynb
+    - 每个模型独立 cell
+    - 输出结果图表自动保存 figures/

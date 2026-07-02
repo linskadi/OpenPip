@@ -1,0 +1,284 @@
+# =============================================================================
+# OpenPip 工具平台矩阵配置
+# 描述：定义不同工具在各操作系统平台的可用性及依赖关系
+# 加载位置：src/engine/runtime/platform-detector.js
+# =============================================================================
+
+# --- 工具定义 ---
+# 每个工具包含：
+#   platforms:    支持的操作系统平台 [windows, macos, linux]
+#   dependencies: 运行依赖项 [network, python, latex, pandoc, git]
+#   risk:         风险等级 [low, medium, high]
+#   fallback:     备用工具名称（当此工具不可用时使用）
+#   description:  工具描述
+tools:
+  # --- 文档处理工具 ---
+  pandoc:
+    description: "通用文档格式转换工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - pandoc
+    risk: low
+    fallback: null
+
+  latex:
+    description: "LaTeX 排版系统"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - latex
+    risk: low
+    fallback: pandoc
+
+  # --- 编程语言运行时 ---
+  python:
+    description: "Python 运行时环境"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - python
+    risk: low
+    fallback: null
+
+  nodejs:
+    description: "Node.js 运行时环境"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: low
+    fallback: null
+
+  # --- 版本控制工具 ---
+  git:
+    description: "Git 版本控制系统"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - git
+    risk: low
+    fallback: null
+
+  # --- 网络工具 ---
+  web_search:
+    description: "网络搜索工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - network
+    risk: medium
+    fallback: null
+
+  web_fetch:
+    description: "网页内容抓取工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - network
+    risk: medium
+    fallback: null
+
+  # --- 文件系统工具 ---
+  file_reader:
+    description: "文件读取工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: low
+    fallback: null
+
+  file_writer:
+    description: "文件写入工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: medium
+    fallback: null
+
+  file_editor:
+    description: "文件编辑工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: medium
+    fallback: file_writer
+
+  directory_listing:
+    description: "目录列表工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: low
+    fallback: null
+
+  # --- 代码执行工具 ---
+  code_executor:
+    description: "代码执行工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - python
+    risk: high
+    fallback: null
+
+  shell_command:
+    description: "Shell 命令执行工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: high
+    fallback: null
+
+  # --- 学术工具 ---
+  reference_manager:
+    description: "参考文献管理工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - python
+    risk: low
+    fallback: null
+
+  citation_generator:
+    description: "引用生成工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies: []
+    risk: low
+    fallback: null
+
+  # --- 数据处理工具 ---
+  data_analyzer:
+    description: "数据分析工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - python
+    risk: medium
+    fallback: null
+
+  chart_generator:
+    description: "图表生成工具"
+    platforms:
+      - windows
+      - macos
+      - linux
+    dependencies:
+      - python
+    risk: medium
+    fallback: null
+
+# --- 平台路径映射 ---
+# 不同操作系统下常用工具的默认安装路径
+platformPaths:
+  windows:
+    python:
+      - "C:\\Python311\\python.exe"
+      - "C:\\Python310\\python.exe"
+      - "C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Python\\Python311\\python.exe"
+    pandoc:
+      - "C:\\Program Files\\Pandoc\\pandoc.exe"
+    git:
+      - "C:\\Program Files\\Git\\bin\\git.exe"
+    latex:
+      - "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe"
+      - "C:\\texlive\\2023\\bin\\win32\\pdflatex.exe"
+
+  macos:
+    python:
+      - "/usr/local/bin/python3"
+      - "/opt/homebrew/bin/python3"
+      - "/usr/bin/python3"
+    pandoc:
+      - "/usr/local/bin/pandoc"
+      - "/opt/homebrew/bin/pandoc"
+    git:
+      - "/usr/bin/git"
+      - "/usr/local/bin/git"
+    latex:
+      - "/Library/TeX/texbin/pdflatex"
+      - "/usr/texbin/pdflatex"
+
+  linux:
+    python:
+      - "/usr/bin/python3"
+      - "/usr/local/bin/python3"
+    pandoc:
+      - "/usr/bin/pandoc"
+      - "/usr/local/bin/pandoc"
+    git:
+      - "/usr/bin/git"
+      - "/usr/local/bin/git"
+    latex:
+      - "/usr/bin/pdflatex"
+      - "/usr/local/bin/pdflatex"
+
+# --- 平台能力矩阵 ---
+# 各平台默认支持的能力（可被实际检测结果覆盖）
+platformCapabilities:
+  windows:
+    shell: "powershell"
+    pathSeparator: "\\"
+    lineEnding: "\r\n"
+    maxPathLength: 260
+    caseSensitive: false
+
+  macos:
+    shell: "zsh"
+    pathSeparator: "/"
+    lineEnding: "\n"
+    maxPathLength: 1024
+    caseSensitive: true
+
+  linux:
+    shell: "bash"
+    pathSeparator: "/"
+    lineEnding: "\n"
+    maxPathLength: 4096
+    caseSensitive: true
+
+# --- 风险等级定义 ---
+riskLevels:
+  low:
+    description: "低风险 - 只读操作，不会修改系统或文件"
+    requireConfirmation: false
+
+  medium:
+    description: "中风险 - 可能修改文件，但在工作区内"
+    requireConfirmation: false
+
+  high:
+    description: "高风险 - 可能执行任意代码或修改系统配置"
+    requireConfirmation: true

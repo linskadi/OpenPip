@@ -1,0 +1,28 @@
+name: writer
+quality_standards:
+  min_words: 3000
+  must_include: [主题句, 论据, 引用, 过渡句]
+model: deepseek/deepseek-chat
+temperature: 0.7
+topP: 0.9
+prompt: writer.md
+knowledge:
+  - terminology.md
+  - format/formula.md
+  - writing/academic-style.md
+  - writing/zero-hallucination-rules.md
+  - writing/forbidden-words.md
+  - writing/agent-collaboration-rules.md
+subtasks:
+  draft: 撰写正文（论点→论据→引用→小结）
+  polish: 学术润色（只改表达不改观点，消除 AI 痕迹）
+  summary: 生成结构化摘要（目的/方法/结果/结论）
+  competition-draft: 竞赛正文撰写
+expected_output:
+  type: markdown
+  min_words: 3000
+  format_rules:
+    - 章节标题不含手动编号
+    - 公式使用 $...$ 或 $$...$$
+    - 引用使用 [N] 格式
+    - 每段有主题句

@@ -1,0 +1,72 @@
+name: competition-data-science
+description: 数据竞赛管线（含代码执行+图表+模型对比）
+category: competition
+domain: data-science
+
+stageTasks:
+  research: "分析竞赛问题：${topic}。生成问题分析报告。"
+  skeleton: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+  code: "基于 outline 编写并执行建模代码，输出 notebook。"
+  draft: "基于 outline 逐章撰写正文。"
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  format: "格式化论文，应用 GB/T 7714 参考文献规范。"
+  figure: "基于正文内容生成学术图表代码并渲染。"
+
+stages:
+  - id: research
+    agent: researcher
+    task: "分析竞赛问题：${topic}。生成问题分析报告。"
+    output: research/problem-analysis.md
+    confirm: true
+
+  - id: skeleton
+    agent: planner
+    task_prefix: "mode: competition"
+    task: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+    input:
+      brief: research/problem-analysis.md
+    output: drafts/outline-v1.md
+    confirm: true
+
+  - id: code
+    agent: coder
+    task: "基于 outline 编写并执行建模代码，输出 notebook。"
+    output: drafts/notebook.ipynb
+
+  - id: draft
+    agent: writer
+    task_prefix: "subtask: competition-draft"
+    task: "基于 outline 逐章撰写正文。"
+    sequential: true
+    chapters: [1, 2, 3, 4, 5]
+    input:
+      outline: drafts/outline-v1.md
+      memory: drafts/consistency-memory.md
+    output: drafts/draft-v1.md
+    qualityCheck: true
+    minWords: 6000
+
+  - id: figure
+    agent: formatter
+    task_prefix: "subtask: figure"
+    task: "基于正文内容生成学术图表代码并渲染。"
+    input:
+      draft: drafts/draft-v1.md
+    output: figures/
+
+  - id: review
+    agent: reviewer
+    task_prefix: "mode: competition"
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: export
+    agent: formatter
+    task_prefix: "subtask: format"
+    task: "格式化论文，应用 GB/T 7714 参考文献规范。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/paper.md

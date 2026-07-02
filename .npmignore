@@ -1,0 +1,9 @@
+tests/
+papers/
+benchmarks/
+eval-reports/
+web/
+.github/
+.env*
+*.json.bak
+.openpip/cache/

@@ -1,0 +1,51 @@
+name: iterative-optimization
+description: Writer↔Reviewer 多轮攻防迭代优化流水线（7-agent 精简版）
+category: research
+domain: optimization
+
+stageTasks:
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  initial-review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  final-review: "以审稿人视角审视论文，输出终审报告。"
+  fact-check: "核实论文中的事实声明和引用。"
+
+stages:
+  - id: initial-review
+    agent: reviewer
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    task_prefix: "mode: research"
+    input:
+      draft: drafts/draft-v2.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: iterative-loop
+    agent: orchestrator
+    mode: iterative
+    maxIterations: 3
+    convergence:
+      minScoreImprove: 2
+      cosineThreshold: 0.99
+      scoreVarianceThreshold: 5
+    # 路由：按 review 决策分派到 writer 的不同子任务
+    routing:
+      minor: writer        # Minor → writer polish 子任务
+      major: writer        # Major → writer draft 子任务重写
+      severe: planner      # Severe → planner 重新规划大纲
+    output: output/iterative-review-report.md
+
+  - id: final-review
+    agent: reviewer
+    task: "以审稿人视角审视论文，输出终审报告。"
+    task_prefix: "mode: research"
+    input:
+      draft: drafts/draft-final.md
+    output: output/final-review-report.md
+    ensemble: true
+
+  - id: fact-check
+    agent: researcher
+    task: "核实论文中的事实声明和引用。"
+    input:
+      draft: drafts/draft-final.md
+    output: output/fact-provenance-report.md

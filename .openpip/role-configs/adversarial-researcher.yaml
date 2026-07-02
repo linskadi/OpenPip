@@ -1,0 +1,8 @@
+name: adversarial-researcher
+quality_standards:
+  must_output: [vulnerabilities, severity, suggestions]
+model: deepseek/deepseek-chat
+temperature: 0.3
+prompt: adversarial-researcher.md
+knowledge:
+  - writing/zero-hallucination-rules.md

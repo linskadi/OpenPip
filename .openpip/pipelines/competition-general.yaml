@@ -1,0 +1,57 @@
+name: competition-general
+description: 通用竞赛管线（调研→大纲→初稿→审稿→导出）
+category: competition
+domain: general
+
+stageTasks:
+  research: "分析竞赛问题：${topic}。生成问题分析报告。"
+  skeleton: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+  draft: "基于 outline 逐章撰写正文。"
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  format: "格式化论文，应用 GB/T 7714 参考文献规范。"
+
+stages:
+  - id: research
+    agent: researcher
+    task: "分析竞赛问题：${topic}。生成问题分析报告。"
+    output: research/problem-analysis.md
+    confirm: true
+
+  - id: skeleton
+    agent: planner
+    task_prefix: "mode: competition"
+    task: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+    input:
+      brief: research/problem-analysis.md
+    output: drafts/outline-v1.md
+    confirm: true
+
+  - id: draft
+    agent: writer
+    task_prefix: "subtask: competition-draft"
+    task: "基于 outline 逐章撰写正文。"
+    sequential: true
+    chapters: [1, 2, 3, 4, 5, 6, 7]
+    input:
+      outline: drafts/outline-v1.md
+      memory: drafts/consistency-memory.md
+    output: drafts/draft-v1.md
+    qualityCheck: true
+    minWords: 6000
+
+  - id: review
+    agent: reviewer
+    task_prefix: "mode: competition"
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: export
+    agent: formatter
+    task_prefix: "subtask: format"
+    task: "格式化论文，应用 GB/T 7714 参考文献规范。"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/paper.md

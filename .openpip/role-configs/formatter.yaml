@@ -1,0 +1,17 @@
+name: formatter
+model: deepseek/deepseek-chat
+temperature: 0.2
+topP: 0.6
+prompt: formatter.md
+knowledge:
+  - format/gb7714.md
+  - format/formula.md
+  - figure/academic-figure-rules.md
+  - figure/chart-selection-guide.md
+  - figure/style-templates.yaml
+subtasks:
+  format: 格式合规（GB/T 7714、公式编号、术语统一）
+  figure: 学术绘图（代码式生成 matplotlib/TikZ，期刊风格）
+  export: LaTeX/PDF 导出
+expected_output:
+  type: markdown|latex|figure-code

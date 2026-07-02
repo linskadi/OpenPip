@@ -1,0 +1,22 @@
+name: code-reviewer
+model: deepseek/deepseek-chat
+temperature: 0.2
+topP: 0.7
+prompt: code-reviewer.md
+knowledge:
+  - writing/technical-report.md
+modes:
+  code-review:
+    weights: {安全性: 30, 代码质量: 25, 性能: 15, 可维护性: 20, 规范性: 10}
+ensemble:
+  num_reviews: 5
+  num_reflections: 3
+  temperature: 0.3
+  integrity_check: true
+expected_output:
+  type: markdown
+  format_rules:
+    - 总分 0-100
+    - 决策 Pass/Needs Fix/Major Rewrite
+    - 3-8 条结构化意见（问题/位置/建议/优先级）
+    - 按严重程度分组（高/中/低）

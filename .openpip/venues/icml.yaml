@@ -1,0 +1,19 @@
+name: "ICML"
+type: "conference"
+pageLimit: 9
+sections:
+  required: ["abstract", "introduction", "related work", "method", "experiments", "conclusion"]
+  optional: ["appendix", "discussion"]
+abstract:
+  maxWords: 200
+  structure: "single_paragraph"
+contribution_placement: "first_page"
+language:
+  voice: "active"
+  first_person: "allowed"
+citation_style: "natbib"
+reviewer_priorities:
+  novelty: 0.30
+  rigor: 0.30
+  clarity: 0.20
+  significance: 0.20

@@ -1,0 +1,240 @@
+# 学术图表样式模板
+# 4 套规范：IEEE / Nature / 中文期刊 / 学位论文
+
+# ============================================================
+# IEEE 风格
+# ============================================================
+ieee:
+  name: IEEE
+  description: "IEEE 期刊风格，黑白友好"
+  font:
+    family: "Times New Roman"
+    size_pt: 10
+    weight: normal
+    fallback: "serif"
+  colors:
+    scheme: "grayscale-safe"
+    palette:
+      - "#000000"   # 黑
+      - "#404040"   # 深灰
+      - "#808080"   # 中灰
+      - "#B0B0B0"   # 浅灰
+      - "#D0D0D0"   # 极浅灰
+    accent: "#000000"
+    line_styles:
+      - "-"         # 实线
+      - "--"        # 虚线
+      - "-."        # 点划线
+      - ":"         # 点线
+    marker_styles:
+      - "o"
+      - "s"
+      - "^"
+      - "D"
+      - "v"
+  dpi:
+    vector: 300
+    raster: 600
+  figure:
+    width_single: 3.5       # inch (单栏)
+    width_double: 7.16      # inch (双栏)
+    height_ratio: 0.75
+  caption:
+    format: "Fig. {number}. {description}"
+    font_size_pt: 9
+    position: "below"
+  axes:
+    label_size_pt: 9
+    title_size_pt: 10
+    tick_size_pt: 8
+    line_width: 0.8
+    grid: false
+    spine_top: false
+    spine_right: false
+    major_tick_direction: "out"
+  legend:
+    fontsize_pt: 8
+    frameon: false
+    loc: "best"
+
+# ============================================================
+# Nature 风格
+# ============================================================
+nature:
+  name: Nature
+  description: "Nature 系列期刊风格，简洁清晰"
+  font:
+    family: "Arial"
+    size_pt: 8
+    weight: normal
+    fallback: "Helvetica"
+  colors:
+    scheme: "color-limited"
+    palette:
+      - "#E64B35"   # 红
+      - "#4DBBD5"   # 青
+      - "#00A087"   # 绿
+      - "#3C5488"   # 蓝
+      - "#F39B7F"   # 橙
+      - "#8491B4"   # 灰蓝
+      - "#91D1C2"   # 薄荷
+      - "#DC0000"   # 深红
+    accent: "#E64B35"
+    line_styles:
+      - "-"
+      - "--"
+  dpi:
+    vector: 300
+    raster: 600
+  figure:
+    width_single: 3.5
+    width_double: 7.2
+    height_ratio: 0.65
+  caption:
+    format: "**Figure {number}** | {description}"
+    font_size_pt: 8
+    position: "below"
+  axes:
+    label_size_pt: 7
+    title_size_pt: 8
+    tick_size_pt: 7
+    line_width: 0.6
+    grid: false
+    spine_top: false
+    spine_right: false
+    major_tick_direction: "out"
+  legend:
+    fontsize_pt: 7
+    frameon: false
+    loc: "best"
+
+# ============================================================
+# 中文期刊风格
+# ============================================================
+chinese_journal:
+  name: 中文期刊
+  description: "中文科技期刊风格（如《机械工程学报》《中国电机工程学报》）"
+  font:
+    family: "SimSun"
+    size_pt: 9                # 小五号 ≈ 9pt
+    weight: normal
+    fallback: "STSong"
+    label_family: "SimHei"    # 坐标轴标签用黑体
+    label_weight: normal
+  colors:
+    scheme: "color-limited"
+    palette:
+      - "#000000"
+      - "#3C5488"
+      - "#E64B35"
+      - "#00A087"
+      - "#4DBBD5"
+      - "#F39B7F"
+    accent: "#3C5488"
+    line_styles:
+      - "-"
+      - "--"
+      - "-."
+  dpi:
+    vector: 300
+    raster: 300
+  figure:
+    width_single: 8.0        # cm，对应单栏 ~8cm
+    width_double: 16.0       # cm，对应双栏 ~16cm
+    height_ratio: 0.65
+  caption:
+    format: "图 {number} {description}"
+    font_size_pt: 9
+    position: "below"
+    font_family: "SimHei"
+  axes:
+    label_size_pt: 9
+    title_size_pt: 9
+    tick_size_pt: 8
+    line_width: 0.8
+    grid: false
+    spine_top: false
+    spine_right: false
+  legend:
+    fontsize_pt: 8
+    frameon: true
+    framealpha: 0.8
+    loc: "best"
+
+# ============================================================
+# 学位论文风格
+# ============================================================
+thesis:
+  name: 学位论文
+  description: "硕博学位论文风格（宋体正文 + 黑体标题）"
+  font:
+    family: "SimSun"
+    size_pt: 10.5             # 五号 ≈ 10.5pt
+    weight: normal
+    fallback: "STSong"
+    label_family: "SimHei"
+    label_weight: normal
+    title_family: "SimHei"
+    title_weight: bold
+  colors:
+    scheme: "color-full"
+    palette:
+      - "#000000"
+      - "#3C5488"
+      - "#E64B35"
+      - "#00A087"
+      - "#4DBBD5"
+      - "#F39B7F"
+      - "#8491B4"
+      - "#91D1C2"
+    accent: "#3C5488"
+    line_styles:
+      - "-"
+      - "--"
+      - "-."
+      - ":"
+  dpi:
+    vector: 300
+    raster: 300
+  figure:
+    width_single: 8.0
+    width_double: 16.0
+    height_ratio: 0.70
+  caption:
+    format: "图 {chapter}.{number} {description}"
+    font_size_pt: 10.5
+    position: "below"
+    font_family: "SimHei"
+  axes:
+    label_size_pt: 10.5
+    title_size_pt: 10.5
+    tick_size_pt: 9
+    line_width: 0.8
+    grid: false
+    spine_top: false
+    spine_right: false
+  legend:
+    fontsize_pt: 9
+    frameon: true
+    framealpha: 0.8
+    loc: "best"
+
+# ============================================================
+# 通用配置
+# ============================================================
+defaults:
+  style: ieee
+  figure_number: 1
+  output_formats:
+    - pdf
+    - png
+  quality_checks:
+    min_dpi: 300
+    require_bw_safe: true
+    max_colors: 8
+    forbidden_effects:
+      - "3d"
+      - "shadow"
+      - "gradient"
+      - "glow"
+      - "emboss"

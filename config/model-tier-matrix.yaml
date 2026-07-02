@@ -1,0 +1,156 @@
+# =============================================================================
+# OpenPip 模型分层矩阵配置
+# 描述：定义不同层级（Tier）的模型集合，用于根据任务复杂度智能路由
+# 加载位置：src/engine/llm/model-router.js
+# =============================================================================
+
+# --- 任务类型到默认 Tier 的映射 ---
+# routeModel() 函数使用此映射确定任务的默认 tier
+# 可根据实际需求调整各任务类型的默认层级
+taskDefaults:
+  # 简单任务 - 快速、低成本
+  formatting: L0           # 格式调整、排版
+  summarization: L0        # 摘要、总结
+  translation: L0          # 翻译
+  proofreading: L0         # 校对、检查
+
+  # 中等任务 - 平衡质量与速度
+  writing: L1              # 写作、起草
+  coding: L1               # 代码生成
+  analysis: L1             # 数据分析
+  research: L1             # 研究、调研
+  planning: L1             # 规划、方案设计
+
+  # 复杂任务 - 高质量、深度思考
+  review: L2               # 评审、审核
+  innovation: L2           # 创新方法、理论推导
+  experimentation: L2      # 实验设计
+  orchestration: L2        # 复杂编排、多步骤任务
+
+# --- 模型层级定义 ---
+# 每个 tier 包含一组模型，按优先级排序（第一个为首选）
+# 模型属性：
+#   id:            模型唯一标识符（必需）
+#   name:          模型显示名称（可选）
+#   costPer1kTokens: 每千 token 成本（美元，可选，用于预算筛选）
+#   contextWindow: 上下文窗口大小（可选）
+tiers:
+  # L0 - 快速响应层
+  # 特点：速度快、成本低、适合简单任务
+  # 用途：格式调整、摘要、翻译、校对等
+  L0:
+    description: "快速响应层 - 低延迟、低成本"
+    models:
+      - id: "deepseek/deepseek-chat"
+        name: "DeepSeek V4 Flash"
+        costPer1kTokens: 0.0001
+        contextWindow: 128000
+
+      - id: "qwen/qwen-turbo"
+        name: "通义千问 Turbo"
+        costPer1kTokens: 0.00008
+        contextWindow: 128000
+
+      - id: "anthropic/claude-haiku-3-5"
+        name: "Claude Haiku 3.5"
+        costPer1kTokens: 0.0001
+        contextWindow: 200000
+
+  # L1 - 标准平衡层
+  # 特点：质量与速度平衡，适合大多数任务
+  # 用途：写作、编码、分析、研究等常规任务
+  L1:
+    description: "标准平衡层 - 质量与速度平衡"
+    models:
+      - id: "deepseek/deepseek-v4"
+        name: "DeepSeek V4"
+        costPer1kTokens: 0.0005
+        contextWindow: 256000
+
+      - id: "qwen/qwen-plus"
+        name: "通义千问 Plus"
+        costPer1kTokens: 0.0004
+        contextWindow: 128000
+
+      - id: "anthropic/claude-sonnet-3-5"
+        name: "Claude Sonnet 3.5"
+        costPer1kTokens: 0.003
+        contextWindow: 200000
+
+      - id: "openai/gpt-4o-mini"
+        name: "GPT-4o Mini"
+        costPer1kTokens: 0.00015
+        contextWindow: 128000
+
+  # L2 - 高质量推理层
+  # 特点：高质量输出、深度推理能力强
+  # 用途：评审、创新、实验设计、复杂编排等
+  L2:
+    description: "高质量推理层 - 深度思考、复杂推理"
+    models:
+      - id: "deepseek/deepseek-reasoner"
+        name: "DeepSeek Reasoner"
+        costPer1kTokens: 0.002
+        contextWindow: 64000
+
+      - id: "anthropic/claude-opus-3"
+        name: "Claude Opus 3"
+        costPer1kTokens: 0.015
+        contextWindow: 200000
+
+      - id: "openai/gpt-4o"
+        name: "GPT-4o"
+        costPer1kTokens: 0.005
+        contextWindow: 128000
+
+      - id: "qwen/qwen-max"
+        name: "通义千问 Max"
+        costPer1kTokens: 0.002
+        contextWindow: 32000
+
+  # L3 - 极致性能层（可选）
+  # 特点：最高质量、最高成本
+  # 用途：极端复杂的研究、理论推导等
+  L3:
+    description: "极致性能层 - 最高质量、专家级"
+    models:
+      - id: "anthropic/claude-opus-3"
+        name: "Claude Opus 3"
+        costPer1kTokens: 0.015
+        contextWindow: 200000
+
+      - id: "openai/o1"
+        name: "OpenAI o1"
+        costPer1kTokens: 0.015
+        contextWindow: 128000
+
+# --- Agent 类型到 Tier 的映射（Source of Truth） ---
+# model-router.js 中硬编码为 fallback（YAML 不可用时使用）
+# 修改此映射后无需同步代码，代码会自动从 YAML 读取；fallback 仅在 YAML 加载失败时生效
+agentTierReference:
+  orchestrator: L0
+  researcher: L1
+  planner: L1
+  writer: L1
+  coder: L1
+  reviewer: L2
+  formatter: L0
+  contribution-architect: L1
+  adversarial-researcher: L2
+  code-reviewer: L2
+
+# --- 路由策略配置 ---
+routingStrategy:
+  # 复杂度评分阈值（对应 scoreComplexity() 函数）
+  complexityThresholds:
+    low: 0.3      # 低于此值使用 L0
+    high: 0.6     # 高于此值使用 L2
+
+  # 预算模式：当指定预算时，选择 tier 中最便宜的可用模型
+  budgetMode: "cheapest_affordable"
+
+  # 缓存策略
+  cache:
+    enabled: true
+    maxEntries: 1000
+    ttlSeconds: 3600

@@ -1,0 +1,19 @@
+name: "IEEE TPAMI"
+type: "journal"
+pageLimit: 14
+sections:
+  required: ["abstract", "introduction", "related work", "methodology", "experiments", "results", "discussion", "conclusion"]
+  optional: ["appendix"]
+abstract:
+  maxWords: 250
+  structure: "structured"
+contribution_placement: "end_of_introduction"
+language:
+  voice: "passive"
+  first_person: "limited"
+citation_style: "ieee"
+reviewer_priorities:
+  novelty: 0.25
+  rigor: 0.35
+  clarity: 0.20
+  significance: 0.20

@@ -1,0 +1,37 @@
+name: reviewer
+model: deepseek/deepseek-chat
+temperature: 0.3
+topP: 0.7
+prompt: reviewer.md
+knowledge:
+  - writing/academic-style.md
+  - format/gb7714.md
+  - writing/agent-collaboration-rules.md
+modes:
+  research:
+    weights: {创新性: 20, 方法合理性: 30, 实验充分性: 25, 写作质量: 15, 逻辑连贯性: 10}
+  competition:
+    weights: {创新性: 35, 逻辑: 25, 呈现: 15, 严谨性: 15, 格式: 10}
+ensemble:
+  num_reviews: 5
+  num_reflections: 5
+  temperature: 0.4
+  venue_overrides:
+    neurips:
+      weights: {创新性: 35, 方法合理性: 20, 实验充分性: 20, 写作质量: 10, 逻辑连贯性: 15}
+    ieee-tpami:
+      weights: {创新性: 15, 方法合理性: 35, 实验充分性: 25, 写作质量: 15, 逻辑连贯性: 10}
+    icml:
+      weights: {创新性: 30, 方法合理性: 25, 实验充分性: 20, 写作质量: 15, 逻辑连贯性: 10}
+    acl:
+      weights: {创新性: 25, 方法合理性: 20, 实验充分性: 15, 写作质量: 25, 逻辑连贯性: 15}
+    chinese-core-journal:
+      weights: {创新性: 20, 方法合理性: 20, 实验充分性: 15, 写作质量: 25, 逻辑连贯性: 20}
+  integrity_check: true
+expected_output:
+  type: markdown
+  format_rules:
+    - 总分 0-100
+    - 决策 Accept/Minor/Major/Reject
+    - 3-5 条结构化意见（问题/位置/建议/优先级）
+    - 完整性校验附录（引用/公式/图表编号）

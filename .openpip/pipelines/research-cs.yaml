@@ -1,0 +1,66 @@
+name: research-cs
+description: 计算机科学论文（轻量级）
+category: research
+domain: cs
+
+stageTasks:
+  research: "分析选题方向：${topic}。生成研究简报。"
+  skeleton: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+  draft: "基于 outline 逐章撰写正文。"
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  format: "格式化论文，应用 GB/T 7714 参考文献规范。"
+  figure: "基于正文内容生成学术图表代码并渲染。"
+
+stages:
+  - id: research
+    agent: researcher
+    task: "分析选题方向：${topic}。生成研究简报。"
+    output: research/research-brief.md
+    confirm: true
+
+  - id: skeleton
+    agent: planner
+    task: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+    task_prefix: "mode: research"
+    input:
+      brief: research/research-brief.md
+    output: drafts/outline-v1.md
+    confirm: true
+
+  - id: draft
+    agent: writer
+    task: "基于 outline 逐章撰写正文。"
+    task_prefix: "subtask: draft"
+    sequential: true
+    chapters: [1, 2, 3, 4, 5]
+    input:
+      outline: drafts/outline-v1.md
+      memory: drafts/consistency-memory.md
+    output: drafts/draft-v1.md
+    qualityCheck: true
+    minWords: 6000
+
+  - id: figure
+    agent: formatter
+    task: "基于正文内容生成学术图表代码并渲染。"
+    task_prefix: "subtask: figure"
+    input:
+      draft: drafts/draft-v1.md
+    output: figures/
+
+  - id: review
+    agent: reviewer
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    task_prefix: "mode: research"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: export
+    agent: formatter
+    task: "格式化论文，应用 GB/T 7714 参考文献规范。"
+    task_prefix: "subtask: format"
+    input:
+      draft: drafts/draft-v1.md
+    output: output/paper.md

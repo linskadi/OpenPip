@@ -1,0 +1,19 @@
+name: "ACL"
+type: "conference"
+pageLimit: 8
+sections:
+  required: ["abstract", "introduction", "related work", "method", "experiments", "conclusion"]
+  optional: ["appendix", "ethics"]
+abstract:
+  maxWords: 150
+  structure: "single_paragraph"
+contribution_placement: "first_page"
+language:
+  voice: "active"
+  first_person: "allowed"
+citation_style: "acl"
+reviewer_priorities:
+  novelty: 0.25
+  rigor: 0.25
+  clarity: 0.30
+  significance: 0.20

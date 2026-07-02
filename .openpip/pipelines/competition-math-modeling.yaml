@@ -1,0 +1,123 @@
+name: competition-math-modeling
+description: 数学建模竞赛管线（含代码执行+图表+敏感性分析+模型检验）
+category: competition
+domain: math-modeling
+
+stageTasks:
+  research: "分析竞赛问题：${topic}。生成问题分析报告。"
+  skeleton: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+  code: "基于 outline 编写并执行建模代码，输出 notebook。"
+  draft: "基于 outline 逐章撰写正文。"
+  review: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+  revise: "基于审稿意见润色论文，只改表达不改观点。"
+  format: "格式化论文，应用 GB/T 7714 参考文献规范。"
+  figure: "基于正文内容生成学术图表代码并渲染。"
+  export: "将论文转为 LaTeX 并编译 PDF。"
+  evolve: "分析评审报告，提取失败模式，自动改进 prompt 文件。"
+
+stages:
+  - id: research
+    agent: researcher
+    task: "分析竞赛问题：${topic}。生成问题分析报告。"
+    output: research/problem-analysis.md
+    confirm: true
+
+  - id: skeleton
+    agent: planner
+    task_prefix: "mode: competition"
+    task: "基于 research-brief.md / problem-analysis.md 设计论文大纲。选题：${topic}。"
+    input:
+      brief: research/problem-analysis.md
+    output: drafts/outline-v1.md
+    confirm: true
+
+  - id: code
+    agent: coder
+    task: "基于 outline 编写并执行建模代码，输出 notebook。"
+    output: drafts/notebook.ipynb
+    input:
+      analysis: research/problem-analysis.md
+    confirm: true
+
+  - id: draft
+    agent: writer
+    task_prefix: "subtask: competition-draft"
+    task: "基于 outline 逐章撰写正文。"
+    sequential: true
+    chapters: [1, 2, 3, 4, 5, 6, 7]
+    input:
+      outline: drafts/outline-v1.md
+      memory: drafts/consistency-memory.md
+      code: drafts/notebook.ipynb
+    output: drafts/draft-v1.md
+    qualityCheck: true
+    qualityRetries: 2
+    minWords: 8000
+
+  - id: figure
+    agent: formatter
+    task_prefix: "subtask: figure"
+    task: "基于正文内容生成学术图表代码并渲染。"
+    input:
+      draft: drafts/draft-v1.md
+      code: drafts/notebook.ipynb
+    output: figures/
+    confirm: true
+
+  - id: sensitivity
+    agent: coder
+    task_prefix: "subtask: sensitivity-analysis"
+    type: sensitivity
+    input:
+      code: drafts/notebook.ipynb
+      draft: drafts/draft-v1.md
+    output: output/sensitivity-report.md
+    confirm: true
+
+  - id: review
+    agent: reviewer
+    task_prefix: "mode: competition"
+    task: "以审稿人视角审视论文，输出审稿报告（含完整性附录）。"
+    input:
+      draft: drafts/draft-v1.md
+      sensitivity: output/sensitivity-report.md
+    output: output/review-report.md
+    ensemble: true
+
+  - id: evolve
+    agent: _system
+    type: evolve
+    task: "分析评审报告，提取失败模式，自动改进 prompt 文件。"
+    input:
+      review: output/review-report.md
+    output: output/evolution-report.md
+
+  - id: revise
+    agent: writer
+    task_prefix: "subtask: polish"
+    task: "基于审稿意见润色论文，只改表达不改观点。"
+    input:
+      draft: drafts/draft-v1.md
+      review: output/review-report.md
+      sensitivity: output/sensitivity-report.md
+    output: drafts/draft-v2.md
+    condition: "review.decision != 'Accept'"
+    qualityCheck: true
+    qualityRetries: 2
+
+  - id: format
+    agent: formatter
+    task_prefix: "subtask: format"
+    task: "格式化论文，应用 GB/T 7714 参考文献规范。"
+    input:
+      draft: drafts/draft-v2.md
+    output: output/paper.md
+    confirm: true
+
+  - id: export
+    agent: formatter
+    task_prefix: "subtask: export"
+    task: "将论文转为 LaTeX 并编译 PDF。"
+    input:
+      draft: output/paper.md
+    output: output/latex/

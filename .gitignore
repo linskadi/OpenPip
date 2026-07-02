@@ -1,0 +1,14 @@
+node_modules/
+.venv/
+openpip.config.json
+credentials.json
+papers/
+*.log
+.openpip/cache/
+.openpip/sandbox/
+.openpip/chat-session.json
+.openpip/evolution-history.json
+.openpip/pipelines/.versions/
+src/.openpip/
+eval-reports/*.json
+

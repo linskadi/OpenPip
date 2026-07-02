@@ -1,0 +1,65 @@
+数学建模类:
+  knowledge:
+    - competition/math-modeling-structure.md
+    - competition/algorithm-selection.md
+    - competition/assumption-writing.md
+    - competition/model-evaluation.md
+    - competition/sensitivity-analysis.md
+    - competition/modeling-templates.md
+    - competition/math-modeling-methods.md
+    - competition/coding-anti-patterns.md
+    - competition/mcm-icm-rules.md
+    - writing/competition-writing-rules.md
+    - figure/competition-visualization-standards.md
+    - methodology/methodology-experiment.md
+    - methodology/methodology-argumentation.md
+    - format/formula.md
+  forbidden_prefixes: []
+
+科创发明/技术设计类:
+  knowledge:
+    - writing/technical-report.md
+    - methodology/methodology-experiment.md
+    - methodology/methodology-argumentation.md
+    - figure/style-templates.yaml
+    - figure/academic-figure-rules.md
+    - figure/chart-selection-guide.md
+    - format/formula.md
+  forbidden_prefixes:
+    - competition/
+
+社会调研/人文社科类:
+  knowledge:
+    - writing/survey-methodology.md
+    - writing/academic-style.md
+    - writing/forbidden-words.md
+    - writing/zero-hallucination-rules.md
+    - methodology/methodology-argumentation.md
+    - format/gb7714.md
+    - fallacies.md
+  forbidden_prefixes:
+    - competition/
+    - format/formula.md
+
+商业案例/创业策划类:
+  knowledge:
+    - writing/business-plan.md
+    - writing/academic-style.md
+    - writing/forbidden-words.md
+    - methodology/methodology-argumentation.md
+    - format/gb7714.md
+    - figure/chart-selection-guide.md
+  forbidden_prefixes:
+    - competition/
+    - format/formula.md
+
+国际英文写作类:
+  knowledge:
+    - writing/english-academic.md
+    - writing/argument-structure.md
+    - writing/forbidden-words.md
+    - writing/zero-hallucination-rules.md
+    - writing/agent-collaboration-rules.md
+    - format/formula.md
+  forbidden_prefixes:
+    - competition/

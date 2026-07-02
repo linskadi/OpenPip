@@ -1,0 +1,21 @@
+name: "中文核心期刊"
+type: "journal"
+pageLimit: 8000
+sections:
+  required: ["摘要", "引言", "相关工作", "方法", "实验", "结论"]
+  optional: ["附录"]
+abstract:
+  maxWords: 300
+  structure: "structured"
+  required_fields: ["目的", "方法", "结果", "结论"]
+contribution_placement: "end_of_introduction"
+language:
+  voice: "passive"
+  first_person: "forbidden"
+  terminology: "chinese_standard"
+citation_style: "gb7714"
+reviewer_priorities:
+  novelty: 0.20
+  rigor: 0.30
+  clarity: 0.25
+  significance: 0.25
